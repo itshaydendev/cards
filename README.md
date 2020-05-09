@@ -1,3 +1,5 @@
+![Docker](https://github.com/itshaydendev/cards/workflows/Docker/badge.svg) ![Go](https://github.com/itshaydendev/cards/workflows/Go/badge.svg)
+
 # Cards
 
 🃏 Cards Against Humanity, implemented using Go and React.
