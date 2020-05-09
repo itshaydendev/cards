@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   id serial PRIMARY KEY UNIQUE,
   username VARCHAR(32) UNIQUE
