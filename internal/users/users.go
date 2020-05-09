@@ -4,7 +4,7 @@ import "github.com/itshaydendev/cards/internal"
 
 // User represents a user of the service
 type User struct {
-	username string `json:"username"`
+	Username string `json:"username"`
 }
 
 // GetAll returns a slice of every user in the database
