@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/itshaydendev/cards/pkg/api"
+	"github.com/itshaydendev/cards/internal/api"
 	"github.com/itshaydendev/cards/pkg/logger"
 )
 
