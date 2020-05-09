@@ -6,15 +6,16 @@
 
 Cards is very easy to install. The recommended way is
 [with Docker](#with-docker), but you can also run
-[by building](#by-building).
+[by building](#from-source).
 
 ### With Docker
 
 ```shell
-$ docker run -d -p 3000:3000 --name cards itshaydendev/cards
+$ docker-compose up -d db
+$ docker-compose up migrate # Runs DB migrations in a quick utility container
 ```
 
-### By Building
+### From Source
 ```shell
 $ make
 $ build/cards
