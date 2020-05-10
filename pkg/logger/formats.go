@@ -11,7 +11,7 @@ func Info(message string) {
 	fmt.Println(
 		colors.ColorText(colors.CyanFG, "info") +
 			colors.ColorText(colors.DarkGrayFG, " => ") +
-			message,
+			colors.ColorText(colors.GrayFG, message),
 	)
 }
 
@@ -20,7 +20,7 @@ func Error(message string) {
 	fmt.Println(
 		colors.ColorText(colors.RedFG, "error") +
 			colors.ColorText(colors.DarkGrayFG, " => ") +
-			message,
+			colors.ColorText(colors.GrayFG, message),
 	)
 }
 
@@ -29,6 +29,6 @@ func Warn(message string) {
 	fmt.Println(
 		colors.ColorText(colors.YellowFG, "info") +
 			colors.ColorText(colors.DarkGrayFG, " => ") +
-			message,
+			colors.ColorText(colors.GrayFG, message),
 	)
 }

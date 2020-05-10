@@ -5,6 +5,9 @@ import "strconv"
 const (
 	// DarkGrayFG is the ANSI code for dark gray foregrounds
 	DarkGrayFG int = 90
+  
+  // GrayFG is the ANSI code for gray foregrounds
+  GrayFG int = 37
 
 	// CyanFG is the ANSI code for cyan foregrounds
 	CyanFG int = 36
@@ -18,5 +21,5 @@ const (
 
 // ColorText will return text with a given ANSI code
 func ColorText(code int, text string) string {
-	return "\033[1;" + strconv.Itoa(code) + "m" + text + "\033[0m"
+	return "\033[" + strconv.Itoa(code) + "m" + text + "\033[0m"
 }
