@@ -1,5 +1,5 @@
 # Build Stage
-FROM golang:1.14.2-alpine
+FROM golang:1.14.2-alpine AS build
 RUN apk add make
 WORKDIR /build
 COPY . .
@@ -9,7 +9,7 @@ RUN make
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 WORKDIR /app
-COPY --from=0 /build/build/cards .
+COPY --from=build /build/build/cards .
 
 CMD [ "/app/cards" ]
 EXPOSE 3000
