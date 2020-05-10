@@ -42,24 +42,24 @@ func GetAll(fields string) ([]User, error) {
 
 // GetOne finds and returns a user from the database by username
 func GetOne(username string) (*User, error) {
-  db, err := internal.Database()
+	db, err := internal.Database()
 
-  if err != nil {
-    return nil, err
-  }
+	if err != nil {
+		return nil, err
+	}
 
-  row := db.QueryRow("SELECT * FROM users WHERE username = $1 LIMIT 1", username)
-  
-  user := User{}
+	row := db.QueryRow("SELECT * FROM users WHERE username = $1 LIMIT 1", username)
 
-  err = row.Scan(&user.ID, &user.Username)
+	user := User{}
 
-  if err != nil {
-    return nil, err
-  }
+	err = row.Scan(&user.ID, &user.Username)
 
-  return &user, nil
-  
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+
 }
 
 // Create inserts a new user into the database.
@@ -89,6 +89,36 @@ func Create(username string) (*User, error) {
 	return &newUser, nil
 }
 
-// TODO implement updating
+// Save updates fields in the database where needed
+func (u User) Save() error {
+	db, err := internal.Database()
+	if err != nil {
+		return err
+	}
+
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	stmt, err := tx.Prepare(`
+		UPDATE users
+		SET username = ?
+		WHERE id = ?
+	`)
+	if err != nil {
+		return err
+	}
+
+	stmt.Exec(u.Username, u.ID)
+
+	err = tx.Commit()
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // TODO implement deleting

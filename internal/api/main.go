@@ -32,9 +32,11 @@ func StartServer() {
 
 	r.HandleFunc("/", rootHandler)
 
+	// User Routes
 	r.HandleFunc("/users", routes.AllUsers).Methods("GET")
-  r.HandleFunc("/users/{username}", routes.GetUser).Methods("GET")
+	r.HandleFunc("/users/{username}", routes.GetUser).Methods("GET")
 	r.HandleFunc("/users", routes.NewUser).Methods("POST")
+	r.HandleFunc("/users/{username}", routes.UpdateUser).Methods("PUT")
 
 	logger.Info("Server starting on *:3000")
 

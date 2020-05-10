@@ -13,11 +13,16 @@ type allUsersResponse struct {
 }
 
 type getUserResponse struct {
-  baseResponse
-  Data *users.User `json:"data"`
+	baseResponse
+	Data *users.User `json:"data"`
 }
 
 type newUserResponse struct {
 	baseResponse
 	Data users.User `json:"data"`
+}
+
+type updateUserResponse struct {
+	baseResponse
+	Data *users.User `json:"data"`
 }

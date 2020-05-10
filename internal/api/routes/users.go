@@ -103,3 +103,84 @@ func NewUser(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(&data)
 }
+
+type updateUserInput struct {
+	Username *string `json:"username"`
+}
+
+// UpdateUser modifies fields on a given user
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	username := vars["username"]
+	decoder := json.NewDecoder(r.Body)
+	var t updateUserInput
+	err := decoder.Decode(&t)
+	if err != nil {
+		logger.Error("Cards encountered an error on the /users endpoint.")
+		logger.Error(err.Error())
+
+		data := baseResponse{
+			Message: "Failed to create a new user.",
+			Error:   "Please ensure you are sending valid JSON to the API.",
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&data)
+		return
+	}
+
+	user, err := users.GetOne(username)
+	if err != nil {
+		logger.Error("Cards encountered an error on the /users/{username} endpoint.")
+		logger.Error(err.Error())
+
+		data := baseResponse{
+			Message: "Failed to find a user with that username.",
+			Error:   "Something went wrong finding the user.",
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&data)
+		return
+	}
+
+	if user == nil {
+		logger.Error("Cards encountered an error on the /users/{username} endpoint.")
+		logger.Error(err.Error())
+
+		data := baseResponse{
+			Message: "Failed to find a user with that username.",
+			Error:   "The user '" + username + "' does not exist.",
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&data)
+		return
+	}
+
+	if t.Username != nil {
+		user.Username = *t.Username
+	}
+
+	err = user.Save()
+	if err != nil {
+		logger.Error("Cards encountered an error on the /users/{username} endpoint.")
+		logger.Error(err.Error())
+
+		data := baseResponse{
+			Message: "Failed to the user with that username.",
+			Error:   "Something went wrong updating the new user.",
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(&data)
+		return
+	}
+
+	data := updateUserResponse{
+		Data: user,
+	}
+	data.Message = "User " + *t.Username + " updated."
+
+	json.NewEncoder(w).Encode(&data)
+}
