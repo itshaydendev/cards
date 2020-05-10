@@ -1,0 +1,28 @@
+name: Docker (release)
+
+on:
+  push:
+    branches: [ master ]    
+  release:
+    types: [published]
+
+jobs:
+  build_push:
+    name: Build & Push
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          repository: itshaydendev/cards
+          tag_with_ref: true
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: itshaydendev/cards/cards
+          tag_with_ref: true
